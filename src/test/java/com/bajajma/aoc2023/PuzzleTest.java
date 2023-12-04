@@ -14,7 +14,7 @@ public class PuzzleTest {
     private Calibrator calibrator = new Calibrator();
     @Test
     void day1Puzzle1() throws Exception {
-        Path path = Paths.get(getClass().getClassLoader().getResource("puzzle1-input.txt").toURI());
+        Path path = Paths.get(getClass().getClassLoader().getResource("day1-puzzle-input.txt").toURI());
         Stream<String> lines = Files.lines(path);
        // lines.map(line -> calibrator.calibrationValue(line)).forEach(value -> System.out.println(value));
       //  System.out.println(lines.map(line -> calibrator.calibrationValue(line)).reduce(0, Integer::sum));
@@ -23,7 +23,7 @@ public class PuzzleTest {
 
     @Test
     void day1Puzzle2() throws Exception {
-        Path path = Paths.get(getClass().getClassLoader().getResource("puzzle1-input.txt").toURI());
+        Path path = Paths.get(getClass().getClassLoader().getResource("day1-puzzle-input.txt").toURI());
         Stream<String> lines = Files.lines(path);
       //lines.map(line -> calibrator.calibrationValueWithLetters(line)).forEach(value -> System.out.println(value));
        //System.out.println(lines.map(line -> calibrator.calibrationValueWithLetters(line)).reduce(0, Integer::sum));
