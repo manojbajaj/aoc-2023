@@ -43,4 +43,24 @@ public class CubeGameTest {
         assertThat( cubeGame.isGameSetValid("Game 5: 17 red, 1 blue, 3 green; 2 blue, 1 red, 2 green")).isFalse();
     }
 
+    @Test
+    void minimumBlue() {
+        assertThat( cubeGame.minimumBlue("Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red")).isEqualTo(15);
+    }
+
+    @Test
+    void minimumGreen() {
+        assertThat( cubeGame.minimumGreen("Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red")).isEqualTo(3);
+    }
+
+    @Test
+    void minimumRed() {
+        assertThat( cubeGame.minimumRed("Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red")).isEqualTo(14);
+    }
+
+    @Test
+    void cubePower() {
+        assertThat( cubeGame.cubePower("Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red")).isEqualTo(630);
+    }
+
 }

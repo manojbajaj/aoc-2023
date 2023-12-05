@@ -43,4 +43,14 @@ public class PuzzleTest {
 
     }
 
+    @Test
+    void day2Puzzle2() throws Exception{
+        Path path = Paths.get(getClass().getClassLoader().getResource("day2-puzzle-input.txt").toURI());
+        Stream<String> lines = Files.lines(path);
+        int result = lines.mapToInt(cubeGame::cubePower).sum();
+        System.out.println(result);
+        assertThat(result).isEqualTo(83707);
+
+    }
+
 }

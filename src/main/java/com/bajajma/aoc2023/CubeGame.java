@@ -1,6 +1,8 @@
 package com.bajajma.aoc2023;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CubeGame {
     int redLimit = 12;
@@ -35,5 +37,49 @@ public class CubeGame {
 
     public boolean isGameSetValid(String input) {
          return Arrays.stream(input.split(":")[1].split(";")).map(String::trim).filter(s -> !isSetValid(s)).count()==0;
+    }
+
+
+    public int minimumBlue(String input) {
+        int minimum = getMinimum(input, "blue");
+
+        return minimum;
+    }
+
+    private static int getMinimum(String input, String color) {
+        List<String> blueList = extractColorList(input, color);
+        int minimum = 0;
+        for( String balls : blueList) {
+           int ballNumber =  Integer.valueOf(balls.split(" ")[0]);
+           if(ballNumber> minimum) {
+               minimum = ballNumber;
+           }
+        }
+        return minimum;
+    }
+
+    static List<String> extractColorList(String input, String color) {
+        return Arrays.stream(input.split(":")[1].split(";"))
+                .map(s -> s.split(","))
+                .flatMap(Arrays::stream)
+                .map(String::trim)
+                .filter(s -> s.contains(color)).collect(Collectors.toList());
+
+    }
+
+    public int cubePower(String input) {
+        return minimumBlue(input)*minimumRed(input)*minimumGreen(input);
+    }
+
+    public int minimumGreen(String input) {
+        int minimum = getMinimum(input, "green");
+
+        return minimum;
+    }
+
+    public int minimumRed(String input) {
+        int minimum = getMinimum(input, "red");
+
+        return minimum;
     }
 }
