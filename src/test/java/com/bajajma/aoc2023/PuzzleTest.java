@@ -13,6 +13,7 @@ public class PuzzleTest {
 
     private Calibrator calibrator = new Calibrator();
     CubeGame cubeGame = new CubeGame();
+    CardGame cardGame = new CardGame();
     @Test
     void day1Puzzle1() throws Exception {
         Path path = Paths.get(getClass().getClassLoader().getResource("day1-puzzle-input.txt").toURI());
@@ -50,6 +51,16 @@ public class PuzzleTest {
         int result = lines.mapToInt(cubeGame::cubePower).sum();
         System.out.println(result);
         assertThat(result).isEqualTo(83707);
+
+    }
+
+    @Test
+    void day4Puzzle1() throws Exception{
+        Path path = Paths.get(getClass().getClassLoader().getResource("day4-puzzle-input.txt").toURI());
+        Stream<String> lines = Files.lines(path);
+        int result = lines.mapToInt(cardGame::calculateWinningPoints).sum();
+        System.out.println(result);
+        assertThat(result).isEqualTo(23235);
 
     }
 
