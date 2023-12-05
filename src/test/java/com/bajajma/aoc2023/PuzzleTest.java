@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,6 +62,16 @@ public class PuzzleTest {
         int result = lines.mapToInt(cardGame::calculateWinningPoints).sum();
         System.out.println(result);
         assertThat(result).isEqualTo(23235);
+
+    }
+
+    @Test
+    void day4Puzzle2() throws Exception{
+        Path path = Paths.get(getClass().getClassLoader().getResource("day4-puzzle-input.txt").toURI());
+        List<String> lines = Files.readAllLines(path);
+        int result = cardGame.calculateTotalCards(lines);
+        System.out.println(result);
+        assertThat(result).isEqualTo(5920640);
 
     }
 
