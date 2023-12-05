@@ -41,15 +41,13 @@ public class CubeGame {
 
 
     public int minimumBlue(String input) {
-        int minimum = getMinimum(input, "blue");
-
-        return minimum;
+        return getMinimum(input, "blue");
     }
 
     private static int getMinimum(String input, String color) {
-        List<String> blueList = extractColorList(input, color);
+        List<String> ballList = extractColorList(input, color);
         int minimum = 0;
-        for( String balls : blueList) {
+        for( String balls : ballList) {
            int ballNumber =  Integer.valueOf(balls.split(" ")[0]);
            if(ballNumber> minimum) {
                minimum = ballNumber;
@@ -72,14 +70,10 @@ public class CubeGame {
     }
 
     public int minimumGreen(String input) {
-        int minimum = getMinimum(input, "green");
-
-        return minimum;
+        return getMinimum(input, "green");
     }
 
     public int minimumRed(String input) {
-        int minimum = getMinimum(input, "red");
-
-        return minimum;
+        return getMinimum(input, "red");
     }
 }
