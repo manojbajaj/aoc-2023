@@ -15,6 +15,7 @@ public class CubeGameTest {
      assertThat( cubeGame.isSetValid("5 blue, 4 red, 14 green")).isFalse();
     assertThat( cubeGame.isSetValid("15 blue, 4 red, 1 green")).isFalse();
 
+
     }
 
     @Test
@@ -26,6 +27,20 @@ public class CubeGameTest {
         assertThat( cubeGame.hasBallsBreachedLimit("14 green")).isTrue();
         assertThat( cubeGame.hasBallsBreachedLimit("15 blue")).isTrue();
 
+    }
+
+    @Test
+    void gameIdTest() {
+        assertThat(cubeGame.gameId("Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red")).isEqualTo(4);
+        assertThat(cubeGame.gameId("Game 5: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red")).isEqualTo(5);
+    }
+
+    @Test
+    void isGameSetValid() {
+        assertThat( cubeGame.isGameSetValid("Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red")).isFalse();
+        assertThat( cubeGame.isGameSetValid("Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green")).isTrue();
+        assertThat( cubeGame.isGameSetValid("Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green")).isTrue();
+        assertThat( cubeGame.isGameSetValid("Game 5: 17 red, 1 blue, 3 green; 2 blue, 1 red, 2 green")).isFalse();
     }
 
 }
