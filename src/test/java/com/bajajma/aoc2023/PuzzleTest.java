@@ -75,4 +75,14 @@ public class PuzzleTest {
 
     }
 
+    @Test
+    void day5Puzzle1() throws Exception{
+        Path path = Paths.get(getClass().getClassLoader().getResource("day5-puzzle-input.txt").toURI());
+        //Stream<String> lines = Files.lines(path);
+        String lines = Files.readString(path);
+        SeedingAlmanac almanac = new SeedingAlmanac(lines);
+
+
+    }
+
 }
