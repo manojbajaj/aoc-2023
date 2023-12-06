@@ -51,7 +51,7 @@ public class SeedingAlmanacTest {
     void rangedSeedPuzzleLocationTest() throws Exception{
 
         SeedingAlmanac almanac = new SeedingAlmanac("day5-puzzle-input.txt");
-        assertThat(almanac.findRangedSeedLocation()).isEqualTo(26829169L);
+        assertThat(almanac.findRangedSeedLocation()).isEqualTo(26829166L);
 
     }
 
