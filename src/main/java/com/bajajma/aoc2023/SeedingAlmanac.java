@@ -42,7 +42,7 @@ public class SeedingAlmanac {
     public long findLocation(long seed) {
         SeedItem item = new SeedItem();
         item.seed = seed;
-        item.soil = findNextItem(seed, seedSoilMap);
+        item.soil = findNextItem(item.seed, seedSoilMap);
         item.fertilizer = findNextItem(item.soil, soilFertlizerMap);
         item.water = findNextItem(item.fertilizer, fertilizerWaterMap);
         item.light = findNextItem(item.water, waterLightMap);
@@ -56,17 +56,16 @@ public class SeedingAlmanac {
     }
 
     private long findNextItem(long item, List<SourceDestRange> map) {
-
         return map.stream().filter(r -> r.isSourceInRange(item)).mapToLong(r -> r.getDest(item)).findAny().orElse(item);
     }
 
 
     class SeedItem {
         long seed, soil, fertilizer, water, light, temperature, humidity, location;
-
         @Override
         public String toString() {
-            return "seed:" + seed + " soil " + soil + " fertilizer " + fertilizer + " water " + water + " light " + light + " location " + location;
+            return "seed:" + seed + " soil " + soil + " fertilizer "
+                    + fertilizer + " water " + water + " light " + light + " location " + location;
         }
     }
 

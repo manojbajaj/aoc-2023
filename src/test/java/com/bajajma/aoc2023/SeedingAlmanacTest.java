@@ -2,6 +2,8 @@ package com.bajajma.aoc2023;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SeedingAlmanacTest {
@@ -30,10 +32,14 @@ public class SeedingAlmanacTest {
     void seedLocationPuzzleTest() throws Exception{
 
         SeedingAlmanac almanac = new SeedingAlmanac(new String[] {"day5-seed-soil.txt","day5-soil-fertilizer.txt","day5-fertilizer-water.txt","day5-water-light.txt","day5-light-temp.txt","day5-temp-humidity.txt","day5-humidity-location.txt" });
-        assertThat(almanac.findLocation(3489262449l)).isEqualTo(78);
-        //seed:3489262449 soil 4257386054 fertilizer 3968824009 water 3355998766 light 3400670940 location 4114099082
-
-
+        assertThat(almanac.findLocation(3489262449l)).isEqualTo(4114099082l);
+        assertThat(almanac.findLocation(222250568)).isEqualTo(284754467l);
+        assertThat(almanac.findLocation(2315397239l)).isEqualTo(1033530902);
+        assertThat(almanac.findLocation(327729713l)).isEqualTo(200394809);
+        assertThat(almanac.findLocation(1284963)).isEqualTo(203560004);
+        assertThat(almanac.findLocation(12560465)).isEqualTo(214835506);
+        assertThat(almanac.findLocation(1219676803)).isEqualTo(218596911);
+        assertThat(almanac.findLocation(397354410)).isEqualTo(2029235296);
 
     }
 
@@ -45,9 +51,14 @@ public class SeedingAlmanacTest {
         assertThat(almanac.findLocation(14)).isEqualTo(43);
         assertThat(almanac.findLocation(55)).isEqualTo(86);
         assertThat(almanac.findLocation(13)).isEqualTo(35);
-        //seed:3489262449 soil 4257386054 fertilizer 3968824009 water 3355998766 light 3400670940 location 4114099082
 
+        String line = "seeds: 79 14 55 13";
 
-
+        long result = Arrays.stream(line.split(":")[1].split(" "))
+                .filter(s -> !s.isBlank())
+                .mapToLong( s -> almanac.findLocation(Long.valueOf(s)))
+                .min().orElse(0);
+        System.out.println(result);
+        assertThat(result).isEqualTo(35);
     }
 }
