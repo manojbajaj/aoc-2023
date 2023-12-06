@@ -6,12 +6,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class SeedingAlmanac {
 
     List<Long> seeds;
+    String seedLine ;
+    List<Long> rangedSeeds;
     List<SourceDestRange> seedSoilMap = new ArrayList<>();
     List<SourceDestRange> soilFertlizerMap = new ArrayList<>();
     List<SourceDestRange> fertilizerWaterMap = new ArrayList<>();
@@ -35,7 +37,18 @@ public class SeedingAlmanac {
 
     }
 
-    private void extractMaps(String filename) throws Exception{
+
+
+    static List<Long> extractSeeds(String line) {
+
+        return Arrays.stream(line.split(":")[1].split(" "))
+                .filter(s -> !s.isBlank())
+                .map(s -> Long.valueOf(s))
+                .collect(Collectors.toList());
+
+    }
+
+    private void extractMaps(String filename) throws Exception {
         Path path = Paths.get(getClass().getClassLoader().getResource(filename).toURI());
         List<String> lines = Files.readAllLines(path);
         boolean seedToSoilMapReadyForMapping = false;
@@ -47,81 +60,88 @@ public class SeedingAlmanac {
         boolean humidityToLocationMapReadyForMapping = false;
 
         for (String line : lines) {
-            if(line.contains("seeds:")) {
+            if (line.contains("seeds:")) {
+                seedLine = line;
                 seeds = extractSeeds(line);
-            }
-            else if(line.contains("seed-to-soil map")) {
+            } else if (line.contains("seed-to-soil map")) {
                 seedToSoilMapReadyForMapping = true;
-            }
-            else if(line.contains("soil-to-fertilizer map")) {
+            } else if (line.contains("soil-to-fertilizer map")) {
                 seedToSoilMapReadyForMapping = false;
                 soilToFertiliserMapReadyForMapping = true;
-            }
-            else if(line.contains("fertilizer-to-water map")) {
+            } else if (line.contains("fertilizer-to-water map")) {
                 soilToFertiliserMapReadyForMapping = false;
-                fertiliserToWaterMapReadyForMapping= true;
-            }
-            else if(line.contains("water-to-light map")) {
+                fertiliserToWaterMapReadyForMapping = true;
+            } else if (line.contains("water-to-light map")) {
                 fertiliserToWaterMapReadyForMapping = false;
                 waterToLightMapReadyForMapping = true;
-            }
-            else if(line.contains("light-to-temperature map")) {
+            } else if (line.contains("light-to-temperature map")) {
                 waterToLightMapReadyForMapping = false;
-                lightToTemperatureMapReadyForMapping= true;
-            }
-            else if(line.contains("temperature-to-humidity map")) {
+                lightToTemperatureMapReadyForMapping = true;
+            } else if (line.contains("temperature-to-humidity map")) {
                 lightToTemperatureMapReadyForMapping = false;
                 temperatureToHumidityMapReadyForMapping = true;
-            }
-            else if(line.contains("humidity-to-location map")) {
+            } else if (line.contains("humidity-to-location map")) {
                 temperatureToHumidityMapReadyForMapping = false;
-                humidityToLocationMapReadyForMapping= true;
-            }
-            else if(line.isBlank()) {
+                humidityToLocationMapReadyForMapping = true;
+            } else if (line.isBlank()) {
 
-            }
-            else if(seedToSoilMapReadyForMapping) {
-                seedSoilMap.add( new SourceDestRange(line));
-            }
-            else if(soilToFertiliserMapReadyForMapping) {
-                soilFertlizerMap.add( new SourceDestRange(line));
-            }
-            else if(fertiliserToWaterMapReadyForMapping) {
-                fertilizerWaterMap.add( new SourceDestRange(line));
-            }
-            else if(waterToLightMapReadyForMapping) {
-                waterLightMap.add( new SourceDestRange(line));
-            }
-            else if(lightToTemperatureMapReadyForMapping) {
-                lightTempMap.add( new SourceDestRange(line));
-            }
-            else if(temperatureToHumidityMapReadyForMapping) {
-                tempHumidityMap.add( new SourceDestRange(line));
-            }
-            else if(humidityToLocationMapReadyForMapping) {
-                humidityLocationMap.add( new SourceDestRange(line));
+            } else if (seedToSoilMapReadyForMapping) {
+                seedSoilMap.add(new SourceDestRange(line));
+            } else if (soilToFertiliserMapReadyForMapping) {
+                soilFertlizerMap.add(new SourceDestRange(line));
+            } else if (fertiliserToWaterMapReadyForMapping) {
+                fertilizerWaterMap.add(new SourceDestRange(line));
+            } else if (waterToLightMapReadyForMapping) {
+                waterLightMap.add(new SourceDestRange(line));
+            } else if (lightToTemperatureMapReadyForMapping) {
+                lightTempMap.add(new SourceDestRange(line));
+            } else if (temperatureToHumidityMapReadyForMapping) {
+                tempHumidityMap.add(new SourceDestRange(line));
+            } else if (humidityToLocationMapReadyForMapping) {
+                humidityLocationMap.add(new SourceDestRange(line));
             }
 
         }
 
 
-
-    }
-
-
-    private List<Long> extractSeeds(String line) {
-
-        return Arrays.stream(line.split(":")[1].split(" "))
-                .filter(s -> !s.isBlank())
-                .map( s -> Long.valueOf(s))
-                .collect(Collectors.toList());
-
     }
 
     public long findFinalLocation() {
-        return  seeds.stream().mapToLong(s -> this.findLocation(s)).min().orElse(0);
+        return seeds.stream().mapToLong(s -> this.findLocation(s)).min().orElse(0);
 
     }
+
+
+
+    public long findRangedSeedLocation() {
+        Long minLocation = Long.MAX_VALUE;
+        List<Long> seedsWIthRange = extractSeeds(seedLine);
+        long start = 0;
+        for (int i = 0; i < seedsWIthRange.size(); i++) {
+            if (i % 2 == 0) {
+                start = seedsWIthRange.get(i);
+            } else {
+                long lengthOfRange = seedsWIthRange.get(i);
+                System.out.println("Starting length range " + lengthOfRange);
+                long startTime = System.currentTimeMillis();
+                for (long j = 0; j < lengthOfRange; j=j+1) {
+                    final long seed = start+j;
+                   // CompletableFuture.supplyAsync(() -> this.findLocation(seed)).thenApply()
+
+                    long location = this.findLocation(seed);
+                    minLocation = location < minLocation?location:minLocation;
+                }
+                long stopTime = System.currentTimeMillis();
+                System.out.println("Time for pair " + (stopTime - startTime)/1000 + " secs");
+            }
+
+
+        }
+        return minLocation;
+
+
+    }
+
     public long findLocation(long seed) {
         SeedItem item = new SeedItem();
         item.seed = seed;
@@ -145,6 +165,7 @@ public class SeedingAlmanac {
 
     class SeedItem {
         long seed, soil, fertilizer, water, light, temperature, humidity, location;
+
         @Override
         public String toString() {
             return "seed:" + seed + " soil " + soil + " fertilizer "

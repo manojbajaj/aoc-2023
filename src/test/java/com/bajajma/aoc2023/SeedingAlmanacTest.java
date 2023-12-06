@@ -3,10 +3,13 @@ package com.bajajma.aoc2023;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SeedingAlmanacTest {
+
+
 
     @Test
     void seedSoilMapTest() {
@@ -37,6 +40,22 @@ public class SeedingAlmanacTest {
     }
 
     @Test
+    void rangedSeedLocationTest() throws Exception{
+
+        SeedingAlmanac almanac = new SeedingAlmanac("day5-puzzle-test-input.txt");
+        assertThat(almanac.findRangedSeedLocation()).isEqualTo(46);
+
+    }
+
+    @Test
+    void rangedSeedPuzzleLocationTest() throws Exception{
+
+        SeedingAlmanac almanac = new SeedingAlmanac("day5-puzzle-input.txt");
+        assertThat(almanac.findRangedSeedLocation()).isEqualTo(26829169L);
+
+    }
+
+    @Test
     void seedLocationTest() throws Exception{
 
         SeedingAlmanac almanac = new SeedingAlmanac("day5-puzzle-test-input.txt");
@@ -48,4 +67,6 @@ public class SeedingAlmanacTest {
 
         assertThat(almanac.findFinalLocation()).isEqualTo(35);
     }
+
+
 }
