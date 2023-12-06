@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -81,6 +82,22 @@ public class PuzzleTest {
         //Stream<String> lines = Files.lines(path);
         String lines = Files.readString(path);
         SeedingAlmanac almanac = new SeedingAlmanac(lines);
+
+
+    }
+
+    @Test
+    void day6Puzzle1() throws Exception{
+        Path path = Paths.get(getClass().getClassLoader().getResource("day6-puzzle-input.txt").toURI());
+        String line = Files.readString(path);
+        BoatRace boatRace = new BoatRace();
+        long result = Arrays.stream(line.split(" "))
+                .mapToLong(b -> boatRace.calculateButtonHoldCount(b))
+                .reduce(1, (total,e) -> total*e);
+
+        System.out.println(result);
+        assertThat(result).isEqualTo(281600);
+
 
 
     }
