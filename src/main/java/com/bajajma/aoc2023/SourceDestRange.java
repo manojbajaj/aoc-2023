@@ -3,9 +3,9 @@ package com.bajajma.aoc2023;
      long suppliedSourceStart, suppliedDestStart, range;
      SourceDestRange( String suppliedRange){
          String[] suppliedValues = suppliedRange.split(" ");
-         suppliedDestStart = Integer.valueOf(suppliedValues[0]);
-         suppliedSourceStart = Integer.valueOf(suppliedValues[1]);
-         range = Integer.valueOf(suppliedValues[2]);
+         suppliedDestStart = Long.valueOf(suppliedValues[0]);
+         suppliedSourceStart = Long.valueOf(suppliedValues[1]);
+         range = Long.valueOf(suppliedValues[2]);
 
 
      }
@@ -14,9 +14,9 @@ package com.bajajma.aoc2023;
          return source >= suppliedSourceStart &&  source < ( suppliedSourceStart + range);
      }
 
-     long getDest( int source) {
+     long getDest( long source) {
          if( isSourceInRange(source)) {
-             return source-suppliedSourceStart+suppliedDestStart;
+             return suppliedDestStart + (source-suppliedSourceStart);
          }
          return -1;
      }

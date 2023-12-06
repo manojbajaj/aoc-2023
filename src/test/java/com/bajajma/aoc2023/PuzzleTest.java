@@ -80,8 +80,20 @@ public class PuzzleTest {
     void day5Puzzle1() throws Exception{
         Path path = Paths.get(getClass().getClassLoader().getResource("day5-puzzle-input.txt").toURI());
         //Stream<String> lines = Files.lines(path);
-        String lines = Files.readString(path);
-        SeedingAlmanac almanac = new SeedingAlmanac(lines);
+        String line = Files.readString(path);
+        SeedingAlmanac almanac = new SeedingAlmanac(new String[] {"day5-seed-soil.txt","day5-soil-fertilizer.txt","day5-fertilizer-water.txt","day5-water-light.txt","day5-light-temp.txt","day5-temp-humidity.txt","day5-humidity-location.txt" });
+
+        long result = Arrays.stream(line.split(":")[1].split(" "))
+                .filter(s -> !s.isBlank())
+                .mapToLong( s -> almanac.findLocation(Long.valueOf(s)))
+                .min().orElse(0);
+        System.out.println(result);
+        assertThat(result).isEqualTo(200394809);
+
+//          Arrays.stream(line.split(":")[1].split(" "))
+//                .filter(s -> !s.isBlank())
+//                .mapToLong( s -> almanac.findLocation(Long.valueOf(s))).forEach(System.out::println);
+
 
 
     }
