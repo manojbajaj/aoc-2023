@@ -2,14 +2,11 @@ package com.bajajma.aoc2023;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.function.Function;
 
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 
-public class CamelGameJokerHand implements Comparable<CamelGameJokerHand> {
+public class CamelJokerGameHand implements Comparable<CamelJokerGameHand> {
 
     final Integer bid;
     final Character[] cardList = new Character[]{'A', 'K', 'Q',  'T', '9', '8', '7', '6', '5', '4', '3', '2','J'};
@@ -21,7 +18,7 @@ public class CamelGameJokerHand implements Comparable<CamelGameJokerHand> {
     private Map<Long, Long> strengthMap = new HashMap<>();
     private Map<Character, Long> charCountMap;
 
-    public CamelGameJokerHand(String hand) {
+    public CamelJokerGameHand(String hand) {
         this.hand = hand;
         String[] items = hand.split(" ");
         this.bid = Integer.valueOf(items[1].trim());
@@ -132,7 +129,7 @@ public class CamelGameJokerHand implements Comparable<CamelGameJokerHand> {
 
 
     @Override
-    public int compareTo(CamelGameJokerHand anotherHand) {
+    public int compareTo(CamelJokerGameHand anotherHand) {
 
         return strength.compareTo(anotherHand.strength);
 

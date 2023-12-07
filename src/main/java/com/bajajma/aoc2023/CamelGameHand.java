@@ -9,13 +9,21 @@ import static java.util.stream.Collectors.groupingBy;
 public class CamelGameHand implements Comparable<CamelGameHand> {
 
     final Integer bid;
-    final Character[] cardList = new Character[]{'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'};
+    final static Character[] cardList = new Character[]{'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'};
     private final String hand;
     int type = 1;
     Long strength = 0l;
     Long handValue = 0l;
-    Map<Character, Integer> highCardValueMap = new HashMap<>();
+    final static Map<Character, Integer> cardValueMap = new HashMap<>();
     private Map<Long, Long> strengthMap = new HashMap<>();
+
+    static {
+        int highCardValue = cardList.length + 1;
+
+        for (int i = 0; i < cardList.length; i++) {
+            cardValueMap.put(cardList[i], highCardValue - i);
+        }
+    }
 
     public CamelGameHand(String hand) {
         this.hand = hand;
@@ -26,17 +34,10 @@ public class CamelGameHand implements Comparable<CamelGameHand> {
 
     }
 
-    private void mapHighCard(String item) {
-        int highCardValue = cardList.length + 1;
 
-        for (int i = 0; i < cardList.length; i++) {
-            highCardValueMap.put(cardList[i], highCardValue - i);
-        }
-
-    }
 
     private void extractStrength(String hand) {
-        mapHighCard(hand);
+
         //    System.out.println(highCardValueMap);
         strengthMap = hand.chars().mapToObj(c -> (char) c)
                 .collect(groupingBy(c -> c, counting())).values().stream().collect(groupingBy(i -> i, counting()));
@@ -53,7 +54,7 @@ public class CamelGameHand implements Comparable<CamelGameHand> {
 
         long seeding = 100000000L;
         for (int i = 0; i < chars.length; i++) {
-            Integer cardValue = highCardValueMap.get(chars[i]);
+            Integer cardValue = cardValueMap.get(chars[i]);
             handValue = handValue + cardValue * seeding;
             seeding = seeding / 100;
         }

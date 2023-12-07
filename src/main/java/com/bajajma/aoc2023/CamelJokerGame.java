@@ -8,24 +8,24 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CamelJokerGame {
-    TreeSet<CamelGameJokerHand> hands ;
+    TreeSet<CamelJokerGameHand> hands ;
     public CamelJokerGame(String filename) throws Exception {
        hands =  extractHandMap(filename);
 
     }
 
-    private TreeSet<CamelGameJokerHand> extractHandMap(String filename) throws Exception {
+    private TreeSet<CamelJokerGameHand> extractHandMap(String filename) throws Exception {
         Path path = Paths.get(getClass().getClassLoader().getResource(filename).toURI());
         Stream<String> lines = Files.lines(path);
-        TreeSet<CamelGameJokerHand> CamelGameJokerHands = lines.map(s -> new CamelGameJokerHand(s)).collect(Collectors.toCollection(TreeSet::new));
-        return CamelGameJokerHands;
+        TreeSet<CamelJokerGameHand> camelJokerGameHands = lines.map(s -> new CamelJokerGameHand(s)).collect(Collectors.toCollection(TreeSet::new));
+        return camelJokerGameHands;
     }
 
     public long totalWinnings() {
         int rank = 0;
         long totalWinning = 0;
 
-        for( CamelGameJokerHand hand : hands){
+        for( CamelJokerGameHand hand : hands){
             ++rank;
 
             long winning = hand.bid*rank;
