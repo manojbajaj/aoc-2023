@@ -6,53 +6,59 @@ import java.util.Map;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 
-public class CamelGameHand {
+public class CamelGameHand implements Comparable<CamelGameHand> {
 
     final Integer bid;
-     int type =1;
-
-     long strength = 0;
-
-     String highCard = "";
-    private Map<Long, Long> strengthMap = new HashMap<>();
     final Character[] cardList = new Character[]{'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'};
-
+    private final String hand;
+    int type = 1;
+    Long strength = 0l;
+    Long handValue = 0l;
     Map<Character, Integer> highCardValueMap = new HashMap<>();
+    private Map<Long, Long> strengthMap = new HashMap<>();
 
     public CamelGameHand(String hand) {
+        this.hand = hand;
         String[] items = hand.split(" ");
         this.bid = Integer.valueOf(items[1].trim());
         extractStrength(items[0]);
 
 
-
-
     }
 
     private void mapHighCard(String item) {
-        int highCardValue = cardList.length+1;
+        int highCardValue = cardList.length + 1;
 
         for (int i = 0; i < cardList.length; i++) {
-            highCardValueMap.put(cardList[i],highCardValue-i);
+            highCardValueMap.put(cardList[i], highCardValue - i);
         }
 
     }
 
     private void extractStrength(String hand) {
         mapHighCard(hand);
-    //    System.out.println(highCardValueMap);
+        //    System.out.println(highCardValueMap);
         strengthMap = hand.chars().mapToObj(c -> (char) c)
                 .collect(groupingBy(c -> c, counting())).values().stream().collect(groupingBy(i -> i, counting()));
-      //  System.out.println(strengthMap);
-        if(isPair()) type = 2;
-        if(isDoublePair()) type =3;
-        if(isThreeOfKind()) type = 4;
-        if(isFullHouse()) type =5;
-        if(isFourOfKind()) type =6;
-        if(isFiveOfKind()) type =7;
+        //  System.out.println(strengthMap);
+        if (isPair()) type = 2;
+        if (isDoublePair()) type = 3;
+        if (isThreeOfKind()) type = 4;
+        if (isFullHouse()) type = 5;
+        if (isFourOfKind()) type = 6;
+        if (isFiveOfKind()) type = 7;
 
-        highCard = hand.chars().mapToObj(c ->(char) c).map( c -> highCardValueMap.get(c)).map(i -> String.valueOf(i)).reduce(String::concat).get();
-        strength = 10000000000L*type+ Long.valueOf(highCard);
+        char[] chars = hand.toCharArray();
+
+
+        long seeding = 100000000L;
+        for (int i = 0; i < chars.length; i++) {
+            Integer cardValue = highCardValueMap.get(chars[i]);
+            handValue = handValue + cardValue * seeding;
+            seeding = seeding / 100;
+        }
+        // System.out.println( " HandValue : " + handValue);
+        strength = 10000000000L * type + handValue;
 
     }
 
@@ -79,5 +85,18 @@ public class CamelGameHand {
 
     boolean isFiveOfKind() {
         return strengthMap.containsKey(5l);
+    }
+
+
+    @Override
+    public int compareTo(CamelGameHand anotherHand) {
+
+        return strength.compareTo(anotherHand.strength);
+
+    }
+
+    @Override
+    public String toString() {
+        return "Hand : " + hand + " Bid : " + bid + " Strength : " + strength;
     }
 }

@@ -12,7 +12,7 @@ public class CamelGameHandTest {
         assertThat(hand.isPair()).isTrue();
         assertThat(hand.isDoublePair()).isFalse();
         assertThat(hand.type).isEqualTo(2);
-        assertThat(hand.highCard).isEqualTo("3210313");
+        assertThat(hand.handValue).isEqualTo(302100313);
 
 
     }
@@ -24,8 +24,8 @@ public class CamelGameHandTest {
         assertThat(hand.isPair()).isFalse();
         assertThat(hand.isDoublePair()).isTrue();
         assertThat(hand.type).isEqualTo(3);
-        assertThat(hand.highCard).isEqualTo("1313677");
-        assertThat(hand.strength).isEqualTo(30001313677L);
+      assertThat(hand.handValue).isEqualTo(1313060707);
+        assertThat(hand.strength).isEqualTo(31313060707L);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class CamelGameHandTest {
         assertThat(hand.isThreeOfKind()).isTrue();
         assertThat(hand.isFullHouse()).isFalse();
         assertThat(hand.type).isEqualTo(4);
-        assertThat(hand.highCard).isEqualTo("1212121114");
+        assertThat(hand.handValue).isEqualTo(1212121114);
         assertThat(hand.strength).isEqualTo(41212121114L);
     }
 
