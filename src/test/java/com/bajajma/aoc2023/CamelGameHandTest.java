@@ -11,7 +11,8 @@ public class CamelGameHandTest {
         assertThat(hand.bid).isEqualTo(765);
         assertThat(hand.isPair()).isTrue();
         assertThat(hand.isDoublePair()).isFalse();
-        assertThat(hand.strength).isEqualTo(2);
+        assertThat(hand.type).isEqualTo(2);
+        assertThat(hand.highCard).isEqualTo("3210313");
 
 
     }
@@ -22,7 +23,9 @@ public class CamelGameHandTest {
         assertThat(hand.bid).isEqualTo(28);
         assertThat(hand.isPair()).isFalse();
         assertThat(hand.isDoublePair()).isTrue();
-        assertThat(hand.strength).isEqualTo(3);
+        assertThat(hand.type).isEqualTo(3);
+        assertThat(hand.highCard).isEqualTo("1313677");
+        assertThat(hand.strength).isEqualTo(30001313677L);
     }
 
     @Test
@@ -31,7 +34,9 @@ public class CamelGameHandTest {
         assertThat(hand.isPair()).isFalse();
         assertThat(hand.isThreeOfKind()).isTrue();
         assertThat(hand.isFullHouse()).isFalse();
-        assertThat(hand.strength).isEqualTo(4);
+        assertThat(hand.type).isEqualTo(4);
+        assertThat(hand.highCard).isEqualTo("1212121114");
+        assertThat(hand.strength).isEqualTo(41212121114L);
     }
 
     @Test
@@ -40,7 +45,7 @@ public class CamelGameHandTest {
         assertThat(hand.isPair()).isFalse();
         assertThat(hand.isThreeOfKind()).isFalse();
         assertThat(hand.isFullHouse()).isTrue();
-        assertThat(hand.strength).isEqualTo(5);
+        assertThat(hand.type).isEqualTo(5);
     }
 
 
@@ -52,7 +57,7 @@ public class CamelGameHandTest {
         assertThat(hand.isFullHouse()).isFalse();
         assertThat(hand.isFourOfKind()).isTrue();
         assertThat(hand.isFiveOfKind()).isFalse();
-        assertThat(hand.strength).isEqualTo(6);
+        assertThat(hand.type).isEqualTo(6);
     }
 
     @Test
@@ -63,7 +68,7 @@ public class CamelGameHandTest {
         assertThat(hand.isFullHouse()).isFalse();
         assertThat(hand.isFourOfKind()).isFalse();
         assertThat(hand.isFiveOfKind()).isTrue();
-        assertThat(hand.strength).isEqualTo(7);
+        assertThat(hand.type).isEqualTo(7);
         //assertThat()
     }
 

@@ -9,8 +9,15 @@ import static java.util.stream.Collectors.groupingBy;
 public class CamelGameHand {
 
     final Integer bid;
-    public int strength=1;
+     int type =1;
+
+     long strength = 0;
+
+     String highCard = "";
     private Map<Long, Long> strengthMap = new HashMap<>();
+    final Character[] cardList = new Character[]{'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'};
+
+    Map<Character, Integer> highCardValueMap = new HashMap<>();
 
     public CamelGameHand(String hand) {
         String[] items = hand.split(" ");
@@ -18,18 +25,35 @@ public class CamelGameHand {
         extractStrength(items[0]);
 
 
+
+
+    }
+
+    private void mapHighCard(String item) {
+        int highCardValue = cardList.length+1;
+
+        for (int i = 0; i < cardList.length; i++) {
+            highCardValueMap.put(cardList[i],highCardValue-i);
+        }
+
     }
 
     private void extractStrength(String hand) {
+        mapHighCard(hand);
+    //    System.out.println(highCardValueMap);
         strengthMap = hand.chars().mapToObj(c -> (char) c)
                 .collect(groupingBy(c -> c, counting())).values().stream().collect(groupingBy(i -> i, counting()));
-        System.out.println(strengthMap);
-        if(isPair()) strength = 2;
-        if(isDoublePair()) strength=3;
-        if(isThreeOfKind()) strength = 4;
-        if(isFullHouse()) strength=5;
-        if(isFourOfKind()) strength=6;
-        if(isFiveOfKind()) strength=7;
+      //  System.out.println(strengthMap);
+        if(isPair()) type = 2;
+        if(isDoublePair()) type =3;
+        if(isThreeOfKind()) type = 4;
+        if(isFullHouse()) type =5;
+        if(isFourOfKind()) type =6;
+        if(isFiveOfKind()) type =7;
+
+        highCard = hand.chars().mapToObj(c ->(char) c).map( c -> highCardValueMap.get(c)).map(i -> String.valueOf(i)).reduce(String::concat).get();
+        strength = 10000000000L*type+ Long.valueOf(highCard);
+
     }
 
     boolean isPair() {
