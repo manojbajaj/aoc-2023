@@ -9,18 +9,30 @@ public class NodesNetworkTest {
     @Test
     void nodeNetworkStepsTest() throws Exception{
         NodeNetwork nodeNetwork = new NodeNetwork("day8-puzzle-test1-input.txt");
-        assertThat(nodeNetwork.steps()).isEqualTo(2);
+        assertThat(nodeNetwork.humanSteps()).isEqualTo(2);
     }
 
     @Test
     void nodeNetworkSteps2Test() throws Exception{
         NodeNetwork nodeNetwork = new NodeNetwork("day8-puzzle-test2-input.txt");
-        assertThat(nodeNetwork.steps()).isEqualTo(6);
+        assertThat(nodeNetwork.humanSteps()).isEqualTo(6);
     }
 
     @Test
     void nodeNetworkPuzzleTest() throws Exception{
         NodeNetwork nodeNetwork = new NodeNetwork("day8-puzzle-input.txt");
-        assertThat(nodeNetwork.steps()).isEqualTo(17621);
+        assertThat(nodeNetwork.humanSteps()).isEqualTo(17621);
+    }
+
+    @Test
+    void nodeNetworkGhostStepsTest() throws Exception{
+        NodeNetwork nodeNetwork = new NodeNetwork("day8-ghost-test1-input.txt");
+        assertThat(nodeNetwork.ghostSteps()).isEqualTo(6);
+    }
+
+    @Test
+    void nodeNetworkGhostPuzzleTest() throws Exception{
+        NodeNetwork nodeNetwork = new NodeNetwork("day8-puzzle-input.txt");
+        assertThat(nodeNetwork.ghostSteps()).isEqualTo(6);
     }
 }

@@ -3,9 +3,11 @@ package com.bajajma.aoc2023;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class NodeNetwork {
 
@@ -38,7 +40,52 @@ public class NodeNetwork {
 
     }
 
-    public int steps() {
+    public long ghostSteps() {
+        char[] instructionsArray = instructions.toCharArray();
+
+        boolean lastElementFound = false;
+
+        List<String> startNodeListForEvaluation = nodes.keySet().stream().filter(s -> s.endsWith("A")).collect(Collectors.toList());
+        List<String> nextNodeListForEvaluation =  new ArrayList<>();
+
+
+        long step=0l;
+        while (!lastElementFound) {
+            for (int i = 0; i < instructionsArray.length; i++) {
+                ++step;
+                nextNodeListForEvaluation =  new ArrayList<>();
+                for ( String nextNodeId : startNodeListForEvaluation) {
+                    Node node = nodes.get(nextNodeId);
+                    nextNodeListForEvaluation.add(node.nextNode(instructionsArray[i]));
+                }
+                System.out.println("Step " + step + "    " + nextNodeListForEvaluation);
+
+
+
+                if ( verifyGhostStepEnded( nextNodeListForEvaluation) ) {
+                    lastElementFound = true;
+                    return step;
+                } else {
+                    startNodeListForEvaluation = nextNodeListForEvaluation;
+                }
+
+            }
+        }
+        return 0;
+    }
+
+    private boolean verifyGhostStepEnded(List<String> nextNodeListForEvaluation) {
+        for(String nodeId : nextNodeListForEvaluation) {
+            if(!nodeId.endsWith("Z")) {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    public int humanSteps() {
         char[] instructionsArray = instructions.toCharArray();
 
         boolean lastElementFound = false;
