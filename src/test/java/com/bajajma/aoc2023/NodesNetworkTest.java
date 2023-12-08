@@ -33,6 +33,6 @@ public class NodesNetworkTest {
     @Test
     void nodeNetworkGhostPuzzleTest() throws Exception{
         NodeNetwork nodeNetwork = new NodeNetwork("day8-puzzle-input.txt");
-        assertThat(nodeNetwork.ghostSteps()).isEqualTo(6);
+        assertThat(nodeNetwork.ghostSteps()).isEqualTo(20685524831999l);
     }
 }
