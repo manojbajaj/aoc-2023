@@ -1,11 +1,12 @@
 package com.bajajma.aoc2023;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class OasisReport {
 
@@ -18,86 +19,51 @@ public class OasisReport {
     }
 
     public long sumOfExtrapolatedValues() throws Exception{
-        long sum = 0;
-        Path path = Paths.get(getClass().getClassLoader().getResource(filename).toURI());
-        List<String> lines = Files.readAllLines(path);
-        for(String line : lines) {
-            ArrayList<Long> lineMap  =  Arrays.stream(line.split(" ")).map(s -> Long.valueOf(s)).collect(Collectors.toCollection(ArrayList::new));
-       //     System.out.println(lineMap);
-            sum = sum + predictNextItem( lineMap);
-        }
-        return sum;
-
-    }
-
-    private long predictNextItem(ArrayList<Long> input) {
-
-        LinkedList<List<Long>>derivedSequences = new LinkedList<>();
-
-
-        boolean lastSequenceFound = false;
-
-        while ( !lastSequenceFound) {
-            derivedSequences.add(input);
-            ArrayList<Long> derivedSeq = new ArrayList<Long>();
-            long lastItem = 0;
-            boolean lastItemExists = false;
-            for( Long item : input) {
-                if(lastItemExists) {
-                    long difference = item - lastItem;
-                    derivedSeq.add(difference);
-                    lastItem = item;
-                } else {
-                    lastItem = item;
-                    lastItemExists = true;
-                }
-            }
-
-            lastSequenceFound = true;
-            for (Long item : derivedSeq) {
-                if (item != 0) {
-                    lastSequenceFound = false;
-                    input = derivedSeq;
-                }
-            }
-        }
-
-    //    System.out.println("Derived Sequence : " + derivedSequences);
-
-        Iterator<List<Long>> listIterator = derivedSequences.descendingIterator();
-
-
-        List<Long> next ;
-
-        long extrapolatedSequenceNumber = 0;
-        while (listIterator.hasNext()) {
-            next = listIterator.next();
-             Long lastItem = next.get(next.size()-1);
-            extrapolatedSequenceNumber = lastItem + extrapolatedSequenceNumber;
-        }
-
-      //  System.out.println(" Input : " + input + "; Derived Number :" + extrapolatedSequenceNumber  );
-
-
-        return extrapolatedSequenceNumber;
+        return sumOfExtrapolatedSequenceNumber(false);
     }
 
     public long sumOfReverseExtrapolatedValues() throws Exception{
+        return sumOfExtrapolatedSequenceNumber(true);
+    }
+
+    private long sumOfExtrapolatedSequenceNumber(boolean reverse) throws URISyntaxException, IOException {
         long sum = 0;
         Path path = Paths.get(getClass().getClassLoader().getResource(filename).toURI());
         List<String> lines = Files.readAllLines(path);
         for(String line : lines) {
             LinkedList<Long> lineMap  =  Arrays.stream(line.split(" ")).map(s -> Long.valueOf(s)).collect(Collectors.toCollection(LinkedList::new));
-            sum = sum + reversePredictNextItem( lineMap);
+            sum = sum + predictNextSequenceItem( lineMap, reverse);
         }
         return sum;
-
     }
 
-    private long reversePredictNextItem(LinkedList<Long> input) {
 
-        LinkedList<List<Long>>derivedSequences = new LinkedList<>();
+    private static long predictNextSequenceItem(List<Long> input, boolean reverse) {
+        LinkedList<List<Long>> derivedSequences = getDerivedSequences(input);
+        Iterator<List<Long>> listIterator = derivedSequences.descendingIterator();
 
+        List<Long> next ;
+
+        long extrapolatedSequenceNumber = 0;
+        Long item = 0l;
+        while (listIterator.hasNext()) {
+            next = listIterator.next();
+            if(reverse) {
+                //first in sequence
+                item = next.get(0);
+                extrapolatedSequenceNumber = item - extrapolatedSequenceNumber;
+            } else{
+                //last in sequence
+                item = next.get(next.size()-1);
+                extrapolatedSequenceNumber = item + extrapolatedSequenceNumber;
+            }
+
+        }
+        return extrapolatedSequenceNumber;
+    }
+
+    private static LinkedList<List<Long>> getDerivedSequences(List<Long> input) {
+        LinkedList<List<Long>>derivedSequences = new LinkedList<>();k
 
         boolean lastSequenceFound = false;
 
@@ -125,25 +91,7 @@ public class OasisReport {
                 }
             }
         }
-
-   //         System.out.println("Derived Sequence : " + derivedSequences);
-
-        Iterator<List<Long>> listIterator = derivedSequences.descendingIterator();
-
-
-        List<Long> next ;
-
-        long extrapolatedSequenceNumber = 0;
-        while (listIterator.hasNext()) {
-            next = listIterator.next();
-            Long firstItem = next.get(0);
-            extrapolatedSequenceNumber = firstItem - extrapolatedSequenceNumber;
-        }
-
-        //  System.out.println(" Input : " + input + "; Derived Number :" + extrapolatedSequenceNumber  );
-
-
-        return extrapolatedSequenceNumber;
+        return derivedSequences;
     }
 
 
