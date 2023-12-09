@@ -63,7 +63,7 @@ public class OasisReport {
     }
 
     private static LinkedList<List<Long>> getDerivedSequences(List<Long> input) {
-        LinkedList<List<Long>>derivedSequences = new LinkedList<>();k
+        LinkedList<List<Long>>derivedSequences = new LinkedList<>();
 
         boolean lastSequenceFound = false;
 
